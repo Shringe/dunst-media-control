@@ -51,4 +51,4 @@ This is a simple Bash script that uses Dunst to show an indicator on the screen 
     bindsym XF86MonBrightnessDown exec --no-startup-id /path/to/volume_brightness.sh brightness_down
 	```
 7. Replace `/path/to/volume_brightness.sh` with the correct path to the script
-8. Edit `volume_brightness.sh` and set your desired values for `bar_color`, `volume_step`, and `brightness_step`
+8. Edit `volume_brightness.sh` and set your desired values for `bar_color`, `volume_step`, `brightness_step`, and `max_volume`
