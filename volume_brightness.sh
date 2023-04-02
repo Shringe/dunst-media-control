@@ -2,6 +2,7 @@
 bar_color="#b3cfa7"
 volume_step=1
 brightness_step=2.5
+max_volume=100
 
 # Uses regex to get volume from pactl
 function get_volume {
@@ -55,7 +56,12 @@ case $1 in
     volume_up)
     # Unmutes and increases volume, then displays the notification
     pactl set-sink-mute @DEFAULT_SINK@ 0
-    pactl set-sink-volume @DEFAULT_SINK@ +$volume_step%
+    volume=`get_volume`
+    if [ $(( $volume + $volume_step )) -gt $max_volume ]; then
+        pactl set-sink-volume @DEFAULT_SINK@ $max_volume%
+    else
+        pactl set-sink-volume @DEFAULT_SINK@ +$volume_step%
+    fi
     show_volume_notif
     ;;
 
