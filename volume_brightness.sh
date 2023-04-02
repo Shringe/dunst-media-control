@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # See README.md for usage instructions
 bar_color="#b3cfa7"
 volume_step=1
@@ -21,11 +23,11 @@ function get_brightness {
 
 # Returns a mute icon, a volume-low icon, or a volume-high icon, depending on the volume
 function get_volume_icon {
-    volume=`get_volume`
-    mute=`get_mute`
-    if [ $volume -eq 0 ] || [ $mute == "yes" ] ; then
+    volume=$(get_volume)
+    mute=$(get_mute)
+    if [ "$volume" -eq 0 ] || [ "$mute" == "yes" ] ; then
         volume_icon=""
-    elif [ $volume -lt 50 ]; then
+    elif [ "$volume" -lt 50 ]; then
         volume_icon=""
     else
         volume_icon=""
@@ -39,14 +41,14 @@ function get_brightness_icon {
 
 # Displays a volume notification using dunstify
 function show_volume_notif {
-    volume=`get_volume`
+    volume=$(get_mute)
     get_volume_icon
     dunstify -i audio-volume-muted-blocking -t 1000 -r 2593 -u normal "$volume_icon $volume%" -h int:value:$volume -h string:hlcolor:$bar_color
 }
 
 # Displays a brightness notification using dunstify
 function show_brightness_notif {
-    brightness=`get_brightness`
+    brightness=$(get_brightness)
     get_brightness_icon
     dunstify -t 1000 -r 2593 -u normal "$brightness_icon $brightness%" -h int:value:$brightness -h string:hlcolor:$bar_color
 }
@@ -56,8 +58,8 @@ case $1 in
     volume_up)
     # Unmutes and increases volume, then displays the notification
     pactl set-sink-mute @DEFAULT_SINK@ 0
-    volume=`get_volume`
-    if [ $(( $volume + $volume_step )) -gt $max_volume ]; then
+    volume=$(get_volume)
+    if [ $(( "$volume" + "$volume_step" )) -gt $max_volume ]; then
         pactl set-sink-volume @DEFAULT_SINK@ $max_volume%
     else
         pactl set-sink-volume @DEFAULT_SINK@ +$volume_step%
