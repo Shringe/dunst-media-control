@@ -2,6 +2,7 @@
 
 ![](brightness.gif)
 ![](volume.gif)
+
 ![](volume.png)
 ![](song.png)
 
