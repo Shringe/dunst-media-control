@@ -2,6 +2,8 @@
 
 ![](brightness.gif)
 ![](volume.gif)
+![](volume.png)
+![](song.png)
 
 This is a simple Bash script that uses Dunst to show an indicator on the screen when the volume and brightness are changed.
 
