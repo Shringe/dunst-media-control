@@ -1,10 +1,13 @@
 #!/bin/bash
 
 # See README.md for usage instructions
-bar_color="#b3cfa7"
 volume_step=1
-brightness_step=2.5
+brightness_step=5
 max_volume=100
+notification_timeout=1000
+download_album_art=true
+show_album_art=true
+show_music_in_volume_indicator=true
 
 # Uses regex to get volume from pactl
 function get_volume {
@@ -18,7 +21,7 @@ function get_mute {
 
 # Uses regex to get brightness from xbacklight
 function get_brightness {
-    xbacklight | grep -Po '[0-9]{1,3}' | head -n 1
+    sudo light | grep -Po '[0-9]{1,3}' | head -n 1
 }
 
 # Returns a mute icon, a volume-low icon, or a volume-high icon, depending on the volume
@@ -39,18 +42,57 @@ function get_brightness_icon {
     brightness_icon=""
 }
 
-# Displays a volume notification using dunstify
+function get_album_art {
+    url=$(playerctl -f "{{mpris:artUrl}}" metadata)
+    if [[ $url == "file://"* ]]; then
+        album_art="${url/file:\/\//}"
+    elif [[ $url == "http://"* ]] && [[ $download_album_art == "true" ]]; then
+        wget -O "/tmp/album_art" "$url"
+        album_art="/tmp/album_art"
+    elif [[ $url == "https://"* ]] && [[ $download_album_art == "true" ]]; then
+        wget -O "/tmp/album_art" "$url"
+        album_art="/tmp/album_art"
+    else
+        album_art=""
+    fi
+}
+
+# Displays a volume notification
 function show_volume_notif {
     volume=$(get_mute)
     get_volume_icon
-    dunstify -i audio-volume-muted-blocking -t 1000 -r 2593 -u normal "$volume_icon $volume%" -h int:value:$volume -h string:hlcolor:$bar_color
+
+    if [[ $show_music_in_volume_indicator == "true" ]]; then
+        current_song=$(playerctl -f "{{title}} - {{artist}}" metadata)
+
+        if [[ $show_album_art == "true" ]]; then
+            get_album_art
+        fi
+
+        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume -i "$album_art" "$volume_icon $volume%" "$current_song"
+    else
+        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume "$volume_icon $volume%"
+    fi
+}
+
+# Displays a music notification
+function show_music_notif {
+    song_title=$(playerctl -f "{{title}}" metadata)
+    song_artist=$(playerctl -f "{{artist}}" metadata)
+
+    if [[ $show_album_art == "true" ]]; then
+        get_album_art
+    fi
+
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -i "$album_art" "$song_title" "$song_artist"
 }
 
 # Displays a brightness notification using dunstify
 function show_brightness_notif {
     brightness=$(get_brightness)
+    echo $brightness
     get_brightness_icon
-    dunstify -t 1000 -r 2593 -u normal "$brightness_icon $brightness%" -h int:value:$brightness -h string:hlcolor:$bar_color
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness "$brightness_icon $brightness%"
 }
 
 # Main function - Takes user input, "volume_up", "volume_down", "brightness_up", or "brightness_down"
@@ -81,13 +123,31 @@ case $1 in
 
     brightness_up)
     # Increases brightness and displays the notification
-    xbacklight -inc $brightness_step -time 0 
+    sudo light -A $brightness_step 
     show_brightness_notif
     ;;
 
     brightness_down)
     # Decreases brightness and displays the notification
-    xbacklight -dec $brightness_step -time 0
+    sudo light -U $brightness_step
     show_brightness_notif
+    ;;
+
+    next_track)
+    # Skips to the next song and displays the notification
+    playerctl next
+    sleep 0.5 && show_music_notif
+    ;;
+
+    prev_track)
+    # Skips to the previous song and displays the notification
+    playerctl previous
+    sleep 0.5 && show_music_notif
+    ;;
+
+    play_pause)
+    playerctl play-pause
+    show_music_notif
+    # Pauses/resumes playback and displays the notification
     ;;
 esac

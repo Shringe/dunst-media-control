@@ -49,6 +49,19 @@ This is a simple Bash script that uses Dunst to show an indicator on the screen 
 	bindsym XF86AudioMute exec --no-startup-id /path/to/volume_brightness.sh volume_mute
     bindsym XF86MonBrightnessUp exec --no-startup-id /path/to/volume_brightness.sh brightness_up
     bindsym XF86MonBrightnessDown exec --no-startup-id /path/to/volume_brightness.sh brightness_down
+    bindsym XF86AudioPlayPause exec --no-startup-id /path/to/volume_brightness.sh play_pause
+    bindsym XF86AudioNext exec --no-startup-id /path/to/volume_brightness.sh next_track
+    bindsym XF86AudioPrev exec --no-startup-id /path/to/volume_brightness.sh prev_track
 	```
 7. Replace `/path/to/volume_brightness.sh` with the correct path to the script
-8. Edit `volume_brightness.sh` and set your desired values for `bar_color`, `volume_step`, `brightness_step`, and `max_volume`
+8. Edit `volume_brightness.sh` and set your desired values for the configuration options at the top
+
+## Configuration Reference
+
+- `volume_step` - The amount by which the volume should be incremented/decremented each time the script is run
+- `brightness_step` - The amount by which the brightness should be incremented/decremented each time the script is run
+- `max_volume` - The maximum allowable volume. Typically 100.
+- `notification_timeout` - The amount of time a notification should stay on the screen, in milliseconds
+- `download_album_art` - Specifies if curl should be used to download album art if it's not a locally cached file
+- `show_album_art` - Specifies if the album art should be displayed
+- `show_music_in_volume_indicator` - Specifies if music information should be displayed along with the volume notification
