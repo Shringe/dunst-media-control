@@ -53,6 +53,8 @@ This is a simple Bash script that uses Dunst to show an indicator on the screen 
     bindsym XF86MonBrightnessUp exec --no-startup-id /path/to/volume_brightness.sh brightness_up
     bindsym XF86MonBrightnessDown exec --no-startup-id /path/to/volume_brightness.sh brightness_down
     bindsym XF86AudioPlayPause exec --no-startup-id /path/to/volume_brightness.sh play_pause
+    bindsym XF86AudioPause exec --no-startup-id /path/to/volume_brightness.sh play_pause
+    bindsym XF86AudioPlay exec --no-startup-id /path/to/volume_brightness.sh play_pause
     bindsym XF86AudioNext exec --no-startup-id /path/to/volume_brightness.sh next_track
     bindsym XF86AudioPrev exec --no-startup-id /path/to/volume_brightness.sh prev_track
 	```

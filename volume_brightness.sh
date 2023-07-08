@@ -79,12 +79,13 @@ function show_volume_notif {
 function show_music_notif {
     song_title=$(playerctl -f "{{title}}" metadata)
     song_artist=$(playerctl -f "{{artist}}" metadata)
+    song_album=$(playerctl -f "{{album}}" metadata)
 
     if [[ $show_album_art == "true" ]]; then
         get_album_art
     fi
 
-    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -i "$album_art" "$song_title" "$song_artist"
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -i "$album_art" "$song_title" "$song_artist - $song_album"
 }
 
 # Displays a brightness notification using dunstify
