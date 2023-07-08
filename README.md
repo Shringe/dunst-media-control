@@ -6,7 +6,7 @@
 ![](volume.png)
 ![](song.png)
 
-This is a simple Bash script that uses Dunst to show an indicator on the screen when the volume and brightness are changed.
+This is a simple Bash script that uses Dunst to show an indicator on the screen when the volume, brightness, and song are changed.
 
 ## Dependancies
 
