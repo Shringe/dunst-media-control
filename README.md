@@ -14,9 +14,9 @@ This is a simple Bash script that uses Dunst to show an indicator on the screen 
 ## Dependancies
 
 * PulseAudio
-* xbacklight (`dnf install xbacklight`)
-* Font Awesome (`dnf install fontawesome-fonts fontawesome5-fonts`)
-* dunst (`dnf install dunst`)
+* [light](https://archlinux.org/packages/extra/x86_64/light/)
+* Font Awesome (`dnf install fontawesome-fonts fontawesome5-fonts` / `pacman -S ttf-font-awesome`)
+* dunst (`dnf install dunst` / `pacman -S dunst`)
 
 ## Installation
 
