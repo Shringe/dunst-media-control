@@ -1,4 +1,4 @@
-# Volume and Brightness Indicator for i3wm
+# Dunst Volume, Music, & Brightness Indicator
 
 ![](images/1.png)
 
@@ -6,7 +6,7 @@
 
 ![](images/3.png)
 
-This is a simple Bash script that uses Dunst to show an indicator on the screen when the volume, brightness, and song are changed.
+This is a Bash script that uses Dunst to show an indicator on the screen when the volume, brightness, and song are changed. It ties into `playerctl` to fetch the current song title/artist/album. It can fetch the album art from a file or URL, and it will cache album art files in `/tmp` to reduce data usage and improve speeds.
 
 ## Dependancies
 
