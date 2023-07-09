@@ -99,7 +99,7 @@ function show_music_notif {
         get_album_art
     fi
 
-    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -i "$album_art" "$song_title" "$song_artist - $song_album"
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:music_notif -i "$album_art" "$song_title" "$song_artist - $song_album"
 }
 
 # Displays a brightness notification using dunstify

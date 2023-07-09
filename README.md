@@ -1,13 +1,13 @@
 # Volume and Brightness Indicator for i3wm
 
-![](brightness.gif)
-![](volume.gif)
+![](images/brightness.gif)
+![](images/volume.gif)
 
-![](volume.png)
-![](song.png)
+![](images/volume.png)
+![](images/song.png)
 
-![](volume2.png)
-![](song2.png)
+![](images/volume2.png)
+![](images/song2.png)
 
 This is a simple Bash script that uses Dunst to show an indicator on the screen when the volume, brightness, and song are changed.
 
