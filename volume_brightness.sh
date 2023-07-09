@@ -47,11 +47,25 @@ function get_album_art {
     if [[ $url == "file://"* ]]; then
         album_art="${url/file:\/\//}"
     elif [[ $url == "http://"* ]] && [[ $download_album_art == "true" ]]; then
-        wget -O "/tmp/album_art" "$url"
-        album_art="/tmp/album_art"
+        # Identify filename from URL
+        filename="$(echo $url | sed "s/.*\///")"
+
+        # Download file to /tmp if it doesn't exist
+        if [ ! -f "/tmp/$filename" ]; then
+            wget -O "/tmp/$filename" "$url"
+        fi
+
+        album_art="/tmp/$filename"
     elif [[ $url == "https://"* ]] && [[ $download_album_art == "true" ]]; then
-        wget -O "/tmp/album_art" "$url"
-        album_art="/tmp/album_art"
+        # Identify filename from URL
+        filename="$(echo $url | sed "s/.*\///")"
+        
+        # Download file to /tmp if it doesn't exist
+        if [ ! -f "/tmp/$filename" ]; then
+            wget -O "/tmp/$filename" "$url"
+        fi
+
+        album_art="/tmp/$filename"
     else
         album_art=""
     fi
