@@ -1,10 +1,13 @@
-# Dunst Volume, Music, & Brightness Indicator
+# Windows-Style Media & Brightness Notifications using Dunst
 
 ![](images/1.png)
-
 ![](images/2.png)
-
 ![](images/3.png)
+![](images/4.png)
+![](images/5.png)
+![](images/6.png)
+![](images/7.png)
+![](images/8.png)
 
 This is a Bash script that uses Dunst to show an indicator on the screen when the volume, brightness, and song are changed. It ties into `playerctl` to fetch the current song title/artist/album. It can fetch the album art from a file or URL, and it will cache album art files in `/tmp` to reduce data usage and improve speeds.
 
