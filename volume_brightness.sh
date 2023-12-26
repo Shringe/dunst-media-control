@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # See README.md for usage instructions
-volume_step=1
+volume_step=5
 brightness_step=5
 max_volume=100
-notification_timeout=1000
+notification_timeout=1000 # in milliseconds
 download_album_art=true
 show_album_art=true
 show_music_in_volume_indicator=true
