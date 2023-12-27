@@ -126,16 +126,10 @@ function show_music_notif {
 
 # Displays mic notification
 function show_mic_notif {
-    mute=$(get_mic_mute)
     volume=$(get_mic_volume)
+    get_mic_icon  
 
-    get_mic_icon
-    if [ "$mute" == "no" ]; then
-        dunstify -t 1000 -r 2593 -u normal "$mic_icon $volume" -h int:value:$volume -h string:hlcolor:$bar_color
-    else
-        dunstify -t 1000 -r 2593 -u normal "$mic_icon $volume"
-    fi
-    # -h int:value:$brightness -h string:hlcolor:$bar_color
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:mic_volume_notif -h int:value:$volume "$mic_icon $volume%"
 }
 
 # Displays a brightness notification using dunstify
