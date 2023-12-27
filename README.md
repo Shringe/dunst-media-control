@@ -1,3 +1,8 @@
+# Credits
+This is a fork of https://gitlab.com/Nmoleo/i3-volume-brightness-indicator
+
+The microphone control is based on https://gitlab.com/rituparnaw16/i3-volume-brightness-indicator/-/blob/main/volume_brightness.sh?ref_type=heads
+
 # Windows-Style Media & Brightness Notifications using Dunst
 
 ![](images/1.png)
