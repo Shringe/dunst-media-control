@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# github https://github.com/Shringe/dunst-media-control
+
 # See README.md for usage instructions
 volume_step=5
 mic_volume_step=5
@@ -41,19 +43,19 @@ function get_volume_icon {
     volume=$(get_volume)
     mute=$(get_mute)
     if [ "$volume" -eq 0 ] || [ "$mute" == "yes" ] ; then
-        volume_icon=""
+        volume_icon="🔇"
     elif [ "$volume" -lt 50 ]; then
-        volume_icon=""
+        volume_icon=" "
     else
-        volume_icon=""
-    fi
+        volume_icon=" "
+    fi 
 }
 
 # Returns mute or unmute mic icon depending on mute status
 function get_mic_icon {
     mute=$(get_mic_mute)
     if [ "$mute" == "yes" ] ; then
-        mic_icon="/"
+        mic_icon="🎙️/"
     else
         mic_icon="🎙️"
     fi
@@ -181,13 +183,13 @@ case $1 in
     ;;
 
     # Media keys =========================================================
-    next_track)
+    next)
     # Skips to the next song and displays the notification
     playerctl next
     sleep 0.5 && show_music_notif
     ;;
 
-    prev_track)
+    prev)
     # Skips to the previous song and displays the notification
     playerctl previous
     sleep 0.5 && show_music_notif
@@ -220,7 +222,7 @@ case $1 in
     show_mic_notif
     ;; 
 
-    mic_toggle)
+    mic_mute)
     pactl set-source-mute @DEFAULT_SOURCE@ toggle
     show_mic_notif
     ;;
