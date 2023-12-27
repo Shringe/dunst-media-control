@@ -2,8 +2,10 @@
 
 # See README.md for usage instructions
 volume_step=5
+mic_volume_step=5
 brightness_step=5
 max_volume=100
+mic_max_volume=100
 notification_timeout=1000 # in milliseconds
 download_album_art=true
 show_album_art=true
@@ -17,6 +19,16 @@ function get_volume {
 # Uses regex to get mute status from pactl
 function get_mute {
     pactl get-sink-mute @DEFAULT_SINK@ | grep -Po '(?<=Mute: )(yes|no)'
+}
+
+# Uses regex to get mic volume from pactl
+function get_mic_volume {
+    pactl get-source-volume @DEFAULT_SOURCE@ | grep -Po '[0-9]{1,3}(?=%)' | head -1
+}
+
+# Gets mic mute status
+function get_mic_mute {
+    pactl get-source-mute @DEFAULT_SOURCE@ | grep -Po '(?<=Mute: )(yes|no)'
 }
 
 # Uses regex to get brightness from xbacklight
@@ -34,6 +46,16 @@ function get_volume_icon {
         volume_icon=""
     else
         volume_icon=""
+    fi
+}
+
+# Returns mute or unmute mic icon depending on mute status
+function get_mic_icon {
+    mute=$(get_mic_mute)
+    if [ "$mute" == "yes" ] ; then
+        mic_icon="/"
+    else
+        mic_icon="🎙️"
     fi
 }
 
@@ -102,6 +124,20 @@ function show_music_notif {
     notify-send -t $notification_timeout -h string:x-dunst-stack-tag:music_notif -i "$album_art" "$song_title" "$song_artist - $song_album"
 }
 
+# Displays mic notification
+function show_mic_notif {
+    mute=$(get_mic_mute)
+    volume=$(get_mic_volume)
+
+    get_mic_icon
+    if [ "$mute" == "no" ]; then
+        dunstify -t 1000 -r 2593 -u normal "$mic_icon $volume" -h int:value:$volume -h string:hlcolor:$bar_color
+    else
+        dunstify -t 1000 -r 2593 -u normal "$mic_icon $volume"
+    fi
+    # -h int:value:$brightness -h string:hlcolor:$bar_color
+}
+
 # Displays a brightness notification using dunstify
 function show_brightness_notif {
     brightness=$(get_brightness)
@@ -112,6 +148,7 @@ function show_brightness_notif {
 
 # Main function - Takes user input, "volume_up", "volume_down", "brightness_up", or "brightness_down"
 case $1 in
+    # Volume =============================================================
     volume_up)
     # Unmutes and increases volume, then displays the notification
     pactl set-sink-mute @DEFAULT_SINK@ 0
@@ -125,7 +162,7 @@ case $1 in
     ;;
 
     volume_down)
-    # Raises volume and displays the notification
+    # Lowers volume and displays the notification
     pactl set-sink-volume @DEFAULT_SINK@ -$volume_step%
     show_volume_notif
     ;;
@@ -136,6 +173,7 @@ case $1 in
     show_volume_notif
     ;;
 
+    # Brightness =========================================================
     brightness_up)
     # Increases brightness and displays the notification
     sudo light -A $brightness_step 
@@ -148,6 +186,7 @@ case $1 in
     show_brightness_notif
     ;;
 
+    # Media keys =========================================================
     next_track)
     # Skips to the next song and displays the notification
     playerctl next
@@ -164,5 +203,31 @@ case $1 in
     playerctl play-pause
     show_music_notif
     # Pauses/resumes playback and displays the notification
+    ;;
+
+    # Microphone =========================================================
+    mic_up)
+    # Unmutes and increases volume, then displays the notification
+    pactl set-source-mute @DEFAULT_SOURCE@ 0
+    
+    mic_volume=$(get_mic_volume)
+    if [ $(( "$mic_volume" + "$mic_volume_step" )) -gt $mic_max_volume ]; then
+        pactl set-source-volume @DEFAULT_SOURCE@ $mic_max_volume%
+    else
+        pactl set-source-volume @DEFAULT_SOURCE@ +$mic_volume_step%
+    fi
+    show_mic_notif
+    ;;
+
+    mic_down)
+    # Lowers volume and displays the notification
+    pactl set-source-volume @DEFAULT_SOURCE@ -$mic_volume_step%
+
+    show_mic_notif
+    ;; 
+
+    mic_toggle)
+    pactl set-source-mute @DEFAULT_SOURCE@ toggle
+    show_mic_notif
     ;;
 esac
