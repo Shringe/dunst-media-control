@@ -20,27 +20,28 @@ This is a Bash script that uses Dunst to show an indicator on the screen when th
 
 ## Installation
 
-1. Verify that all of the dependancies are installed
-2. Copy `volume_brightness.sh` to a folder on your computer
-3. Edit `~/.config/dunst/dunstrc`
-4. Under the `[global]` section, add `Font Awesome 5 Free Regular`
-5. Change `origin` to `bottom-center` or your desired location
-6. Edit `~/.config/i3/config`
-7. Add the following lines:
-	```
-	bindsym XF86AudioRaiseVolume exec --no-startup-id /path/to/volume_brightness.sh volume_up
-	bindsym XF86AudioLowerVolume exec --no-startup-id /path/to/volume_brightness.sh volume_down
-	bindsym XF86AudioMute exec --no-startup-id /path/to/volume_brightness.sh volume_mute
-    bindsym XF86MonBrightnessUp exec --no-startup-id /path/to/volume_brightness.sh brightness_up
-    bindsym XF86MonBrightnessDown exec --no-startup-id /path/to/volume_brightness.sh brightness_down
-    bindsym XF86AudioPlayPause exec --no-startup-id /path/to/volume_brightness.sh play_pause
-    bindsym XF86AudioPause exec --no-startup-id /path/to/volume_brightness.sh play_pause
-    bindsym XF86AudioPlay exec --no-startup-id /path/to/volume_brightness.sh play_pause
-    bindsym XF86AudioNext exec --no-startup-id /path/to/volume_brightness.sh next_track
-    bindsym XF86AudioPrev exec --no-startup-id /path/to/volume_brightness.sh prev_track
-	```
-8. Replace `/path/to/volume_brightness.sh` with the correct path to the script
-9. Edit `volume_brightness.sh` and set your desired values for the configuration options at the top
+1. Verify that all of the dependencies are installed
+2. Edit `media-control` and set your desired values for the configuration options at the top
+3. Copy `media-control` to a directory on your PATH
+4. Edit `~/.config/dunst/dunstrc`
+5. Under the `[global]` section, add `Font Awesome 5 Free Regular`
+6. Change `origin` to `bottom-center` or your desired location
+
+For i3 keybindings:
+1. Edit `~/.config/i3/config`
+2. Add the following lines:
+    ```
+    bindsym XF86AudioRaiseVolume exec --no-startup-id media-control volume_up
+    bindsym XF86AudioLowerVolume exec --no-startup-id media-control volume_down
+    bindsym XF86AudioMute exec --no-startup-id media-control volume_mute
+    bindsym XF86MonBrightnessUp exec --no-startup-id media-control brightness_up
+    bindsym XF86MonBrightnessDown exec --no-startup-id media-control brightness_down
+    bindsym XF86AudioPlayPause exec --no-startup-id media-control play_pause
+    bindsym XF86AudioPause exec --no-startup-id media-control play_pause
+    bindsym XF86AudioPlay exec --no-startup-id media-control play_pause
+    bindsym XF86AudioNext exec --no-startup-id media-control next_track
+    bindsym XF86AudioPrev exec --no-startup-id media-control prev_track
+    ```
 
 ## Configuration Reference
 
