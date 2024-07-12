@@ -137,7 +137,6 @@ function show_mic_notif {
 # Displays a brightness notification using dunstify
 function show_brightness_notif {
     brightness=$(get_brightness)
-    echo $brightness
     get_brightness_icon
     notify-send -t $notification_timeout -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness "$brightness_icon $brightness%"
 }
