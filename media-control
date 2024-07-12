@@ -9,9 +9,9 @@ brightness_step=5
 max_volume=100
 mic_max_volume=100
 notification_timeout=1000 # in milliseconds
-download_album_art=false
+download_album_art=true
 show_album_art=true
-show_music_in_volume_indicator=false
+show_music_in_volume_indicator=true
 
 # Uses regex to get volume from pactl
 function get_volume {
