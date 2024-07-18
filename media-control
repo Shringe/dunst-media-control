@@ -174,8 +174,6 @@ case $1 in
     # Brightness =========================================================
     brightness_up)
     # Increases brightness and displays the notification
-    
-
     brightnessctl s +$brightness_step%
     show_brightness_notif
     ;;
@@ -190,25 +188,19 @@ case $1 in
     next)
     # Skips to the next song and displays the notification
     playerctl next
-    # Some process on my device already provides notifications
-    # so I dont need these, even though they're perfect.
-    # sleep 0.2 && show_music_notif
+    sleep 0.5 && show_music_notif
     ;;
 
     prev)
     # Skips to the previous song and displays the notification
     playerctl previous
-    # Some process on my device already provides notifications
-    # so I dont need these, even though they're perfect.
-    # sleep 0.2 && show_music_notif
+    sleep 0.5 && show_music_notif
     ;;
 
     play_pause)
-    playerctl play-pause
-    # Some process on my device already provides notifications
-    # so I dont need these, even though they're perfect.
-    # show_music_notif
     # Pauses/resumes playback and displays the notification
+    playerctl play-pause
+    show_music_notif
     ;;
 
     # Microphone =========================================================
@@ -220,7 +212,7 @@ case $1 in
     if [ $(( "$mic_volume" + "$mic_volume_step" )) -gt $mic_max_volume ]; then
         pactl set-source-volume @DEFAULT_SOURCE@ $mic_max_volume%
     else
-        pactl set-source-volume @DEFAULT_SOURCE@ +$mic_volume_step
+        pactl set-source-volume @DEFAULT_SOURCE@ +$mic_volume_step%
     fi
     show_mic_notif
     ;;
