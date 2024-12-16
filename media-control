@@ -13,6 +13,8 @@ download_album_art=true
 show_album_art=true
 show_music_in_volume_indicator=true
 
+tmproot="${XDG_RUNTIME_DIR:-${XDG_CACHE_HOME:-/tmp}}/dunst-media-control"
+
 # Uses regex to get volume from pactl
 function get_volume {
     pactl get-sink-volume @DEFAULT_SINK@ | grep -Po '[0-9]{1,3}(?=%)' | head -1
@@ -79,22 +81,24 @@ function get_album_art {
         # Identify filename from URL
         filename="$(echo $url | sed "s/.*\///")"
 
-        # Download file to /tmp if it doesn't exist
-        if [ ! -f "/tmp/$filename" ]; then
-            wget -O "/tmp/$filename" "$url"
+        # Download file to $tmproot if it doesn't exist
+        if [ ! -f "$tmproot/$filename" ]; then
+            mkdir -p "$tmproot"
+            wget -O "$tmproot/$filename" "$url"
         fi
 
-        album_art="/tmp/$filename"
+        album_art="$tmproot/$filename"
     elif [[ $url == "https://"* ]] && [[ $download_album_art == "true" ]]; then
         # Identify filename from URL
         filename="$(echo $url | sed "s/.*\///")"
         
-        # Download file to /tmp if it doesn't exist
-        if [ ! -f "/tmp/$filename" ]; then
-            wget -O "/tmp/$filename" "$url"
+        # Download file to $tmproot if it doesn't exist
+        if [ ! -f "$tmproot/$filename" ]; then
+            mkdir -p "$tmproot"
+            wget -O "$tmproot/$filename" "$url"
         fi
 
-        album_art="/tmp/$filename"
+        album_art="$tmproot/$filename"
     else
         album_art=""
     fi
