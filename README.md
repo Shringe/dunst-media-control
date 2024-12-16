@@ -18,7 +18,7 @@ This is a Bash script that uses Dunst to show an indicator on the screen when th
 
 ## Dependancies
 
-* PulseAudio
+* WirePlumber
 * [light](https://archlinux.org/packages/extra/x86_64/light/)
 * Font Awesome (`dnf install fontawesome-fonts fontawesome5-fonts` / `pacman -S ttf-font-awesome`)
 * dunst (`dnf install dunst` / `pacman -S dunst`)
