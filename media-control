@@ -37,8 +37,8 @@ function get_mic_mute {
 function get_brightness {
     declare -i absb
     declare -i maxb
-    absb=$(brightnessctl g)
-    maxb=$(brightnessctl m)
+    absb=$(brightnessctl get)
+    maxb=$(brightnessctl max)
     absb=$(( absb * 100 ))
     echo $(( absb / maxb ))
 }
@@ -174,13 +174,13 @@ case $1 in
     # Brightness =========================================================
     brightness_up)
     # Increases brightness and displays the notification
-    brightnessctl s +$brightness_step%
+    brightnessctl set +$brightness_step%
     show_brightness_notif
     ;;
 
     brightness_down)
     # Decreases brightness and displays the notification
-    brightnessctl s $brightness_step%-
+    brightnessctl set $brightness_step%-
     show_brightness_notif
     ;;
 
