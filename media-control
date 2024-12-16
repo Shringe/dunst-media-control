@@ -53,7 +53,7 @@ function get_volume_icon {
         volume_icon=" "
     else
         volume_icon=" "
-    fi 
+    fi
 }
 
 # Returns mute or unmute mic icon depending on mute status
@@ -88,7 +88,7 @@ function get_album_art {
     elif [[ $url == "https://"* ]] && [[ $download_album_art == "true" ]]; then
         # Identify filename from URL
         filename="$(echo $url | sed "s/.*\///")"
-        
+
         # Download file to /tmp if it doesn't exist
         if [ ! -f "/tmp/$filename" ]; then
             wget -O "/tmp/$filename" "$url"
@@ -132,7 +132,7 @@ function show_music_notif {
 # Displays mic notification
 function show_mic_notif {
     volume=$(get_mic_volume)
-    get_mic_icon  
+    get_mic_icon
 
     notify-send -t $notification_timeout -h string:x-dunst-stack-tag:mic_volume_notif -h int:value:$volume "$mic_icon $volume%"
 }
@@ -207,7 +207,7 @@ case $1 in
     mic_up)
     # Unmutes and increases volume, then displays the notification
     pactl set-source-mute @DEFAULT_SOURCE@ 0
-    
+
     mic_volume=$(get_mic_volume)
     if [ $(( "$mic_volume" + "$mic_volume_step" )) -gt $mic_max_volume ]; then
         pactl set-source-volume @DEFAULT_SOURCE@ $mic_max_volume%
@@ -221,7 +221,7 @@ case $1 in
     # Lowers volume and displays the notification
     pactl set-source-volume @DEFAULT_SOURCE@ -$mic_volume_step%
     show_mic_notif
-    ;; 
+    ;;
 
     mic_mute)
     pactl set-source-mute @DEFAULT_SOURCE@ toggle
