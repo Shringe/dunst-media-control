@@ -43,32 +43,34 @@ function get_brightness {
     echo $(( absb / maxb ))
 }
 
-# Returns a mute icon, a volume-low icon, or a volume-high icon, depending on the volume
+# Returns an emoji to use to represent speaker volume, depending on its state
 function get_volume_icon {
     volume=$(get_volume)
     mute=$(get_mute)
-    if [ "$volume" -eq 0 ] || [ "$mute" == "yes" ] ; then
-        volume_icon="🔇"
+    if [ "$mute" == "yes" ]; then
+        volume_icon="\U0001f507" # SPEAKER WITH CANCELLATION STROKE
+    elif [ "$volume" -eq 0 ]; then
+        volume_icon="\U0001f508" # SPEAKER
     elif [ "$volume" -lt 50 ]; then
-        volume_icon=" "
+        volume_icon="\U0001f509" # SPEAKER WITH ONE SOUND WAVE
     else
-        volume_icon=" "
+        volume_icon="\U0001f50a" # SPEAKER WITH THREE SOUND WAVES
     fi 
 }
 
-# Returns mute or unmute mic icon depending on mute status
+# Returns an emoji to use to represent microphone volume, depending on its state
 function get_mic_icon {
     mute=$(get_mic_mute)
     if [ "$mute" == "yes" ] ; then
-        mic_icon="🎙️/"
+        mic_icon="\U0001f3a4\u0338" # MICROPHONE, COMBINING LONG SOLIDUS OVERLAY
     else
-        mic_icon="🎙️"
+        mic_icon="\U0001f3a4" # MICROPHONE
     fi
 }
 
-# Always returns the same icon - I couldn't get the brightness-low icon to work with fontawesome
+# Returns an emoji to use to represent brightness
 function get_brightness_icon {
-    brightness_icon=""
+    brightness_icon="\U0001f4a1"
 }
 
 function get_album_art {
