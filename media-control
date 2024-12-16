@@ -33,7 +33,7 @@ function get_mic_mute {
     pactl get-source-mute @DEFAULT_SOURCE@ | grep -Po '(?<=Mute: )(yes|no)'
 }
 
-# Uses regex to get brightness from xbacklight
+# Query `brightnessctl` for the brightness value
 function get_brightness {
     declare -i absb
     declare -i maxb
