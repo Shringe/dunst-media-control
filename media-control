@@ -36,7 +36,7 @@ function get_mic_mute {
 # Uses regex to get brightness from xbacklight
 function get_brightness {
     declare -i absb
-    declare -i relb
+    declare -i maxb
     absb=$(brightnessctl g)
     maxb=$(brightnessctl m)
     absb=$(( absb * 100 ))
