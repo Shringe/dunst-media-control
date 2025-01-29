@@ -18,6 +18,8 @@ This is a Bash script that uses Dunst to show an indicator on the screen when th
 
 ## Dependancies
 
+* brightnessctl
+* playerctl
 * PulseAudio
 * [light](https://archlinux.org/packages/extra/x86_64/light/)
 * Font Awesome (`dnf install fontawesome-fonts fontawesome5-fonts` / `pacman -S ttf-font-awesome`)
