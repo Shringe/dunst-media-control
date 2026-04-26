@@ -33,11 +33,12 @@ function get_mic_mute {
     pactl get-source-mute @DEFAULT_SOURCE@ | grep -Po '(?<=Mute: )(yes|no)'
 }
 
-# Uses regex to get brightness from xbacklight
+# Query `brightnessctl` for the brightness value
 function get_brightness {
     declare -i absb
-    absb=$(brightnessctl g)
-    maxb=$(brightnessctl m)
+    declare -i maxb
+    absb=$(brightnessctl get)
+    maxb=$(brightnessctl max)
     absb=$(( absb * 100 ))
     echo $(( absb / maxb ))
 }
@@ -173,13 +174,13 @@ case $1 in
     # Brightness =========================================================
     brightness_up)
     # Increases brightness and displays the notification
-    brightnessctl s +$brightness_step%
+    brightnessctl set +$brightness_step%
     show_brightness_notif
     ;;
 
     brightness_down)
     # Decreases brightness and displays the notification
-    brightnessctl s $brightness_step%-
+    brightnessctl set $brightness_step%-
     show_brightness_notif
     ;;
 
