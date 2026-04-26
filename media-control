@@ -35,12 +35,12 @@ function get_mic_mute {
     pactl get-source-mute @DEFAULT_SOURCE@ | grep -Po '(?<=Mute: )(yes|no)'
 }
 
-# Uses regex to get brightness from xbacklight
+# Query `brightnessctl` for the brightness value
 function get_brightness {
     declare -i absb
-    declare -i relb
-    absb=$(brightnessctl g)
-    maxb=$(brightnessctl m)
+    declare -i maxb
+    absb=$(brightnessctl get)
+    maxb=$(brightnessctl max)
     absb=$(( absb * 100 ))
     echo $(( absb / maxb ))
 }
@@ -55,7 +55,7 @@ function get_volume_icon {
         volume_icon=" "
     else
         volume_icon=" "
-    fi 
+    fi
 }
 
 # Returns mute or unmute mic icon depending on mute status
@@ -79,7 +79,7 @@ function get_album_art {
         album_art="${url/file:\/\//}"
     elif [[ $url == "http://"* ]] && [[ $download_album_art == "true" ]]; then
         # Identify filename from URL
-        filename="$(echo $url | sed "s/.*\///")"
+        filename="$(echo "$url" | sed "s/.*\///")"
 
         # Download file to $tmproot if it doesn't exist
         if [ ! -f "$tmproot/$filename" ]; then
@@ -115,9 +115,9 @@ function show_volume_notif {
         if [[ $show_album_art == "true" ]]; then
             get_album_art
         fi
-        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume -i "$album_art" "$volume_icon $volume%" "$current_song"
+        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h "int:value:$volume" -i "$album_art" "$volume_icon $volume%" "$current_song"
     else
-        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h int:value:$volume "$volume_icon $volume%"
+        notify-send -t $notification_timeout -h string:x-dunst-stack-tag:volume_notif -h "int:value:$volume" "$volume_icon $volume%"
     fi
 }
 
@@ -136,16 +136,16 @@ function show_music_notif {
 # Displays mic notification
 function show_mic_notif {
     volume=$(get_mic_volume)
-    get_mic_icon  
+    get_mic_icon
 
-    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:mic_volume_notif -h int:value:$volume "$mic_icon $volume%"
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:mic_volume_notif -h "int:value:$volume" "$mic_icon $volume%"
 }
 
 # Displays a brightness notification using dunstify
 function show_brightness_notif {
     brightness=$(get_brightness)
     get_brightness_icon
-    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:brightness_notif -h int:value:$brightness "$brightness_icon $brightness%"
+    notify-send -t $notification_timeout -h string:x-dunst-stack-tag:brightness_notif -h "int:value:$brightness" "$brightness_icon $brightness%"
 }
 
 # Main function - Takes user input, "volume_up", "volume_down", "brightness_up", or "brightness_down"
@@ -178,13 +178,13 @@ case $1 in
     # Brightness =========================================================
     brightness_up)
     # Increases brightness and displays the notification
-    brightnessctl s +$brightness_step%
+    brightnessctl set +$brightness_step%
     show_brightness_notif
     ;;
 
     brightness_down)
     # Decreases brightness and displays the notification
-    brightnessctl s $brightness_step%-
+    brightnessctl set $brightness_step%-
     show_brightness_notif
     ;;
 
@@ -211,7 +211,7 @@ case $1 in
     mic_up)
     # Unmutes and increases volume, then displays the notification
     pactl set-source-mute @DEFAULT_SOURCE@ 0
-    
+
     mic_volume=$(get_mic_volume)
     if [ $(( "$mic_volume" + "$mic_volume_step" )) -gt $mic_max_volume ]; then
         pactl set-source-volume @DEFAULT_SOURCE@ $mic_max_volume%
@@ -225,7 +225,7 @@ case $1 in
     # Lowers volume and displays the notification
     pactl set-source-volume @DEFAULT_SOURCE@ -$mic_volume_step%
     show_mic_notif
-    ;; 
+    ;;
 
     mic_mute)
     pactl set-source-mute @DEFAULT_SOURCE@ toggle
